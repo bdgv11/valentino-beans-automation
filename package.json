@@ -1,0 +1,24 @@
+{
+  "name": "valentino-beans-automation",
+  "version": "1.0.0",
+  "description": "Professional E2E Automation Framework for Valentino's Magic Beans using Playwright and TypeScript. This repository implements Page Object Model (POM), API testing, and Hybrid scenarios, featuring a CI/CD pipeline with GitHub Actions for automated regression suites and HTML reporting.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdgv11/valentino-beans-automation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bdgv11/valentino-beans-automation/issues"
+  },
+  "homepage": "https://github.com/bdgv11/valentino-beans-automation#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.2.3"
+  }
+}
