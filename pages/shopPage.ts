@@ -3,6 +3,9 @@ import { expect, type Locator, type Page } from "@playwright/test";
 export class ShopPage {
   readonly page: Page;
   readonly productCard: Locator;
+  readonly productName: Locator;
+  readonly productDescription: Locator;
+  readonly productPrice: Locator;
   readonly addToCartButton: Locator;
   readonly viewDetailsButton: Locator;
   readonly addedSuccessMsg: Locator;
@@ -10,6 +13,9 @@ export class ShopPage {
   constructor(page: Page) {
     this.page = page;
     this.productCard = page.locator(".p-6");
+    this.productName = page.getByRole("heading");
+    this.productDescription = page.getByRole("paragraph");
+    this.productPrice = page.locator(".font-bold");
     this.addToCartButton = page.getByRole("button", {
       name: "Add to Cart",
     });
@@ -36,5 +42,21 @@ export class ShopPage {
         exact: true,
       }),
     ).toBeVisible();
+  }
+
+  getProductNameByIndex(index: number) {
+    return this.productCard.nth(index).locator(this.productName);
+  }
+
+  getProductDescriptionByIndex(index: number) {
+    return this.productCard.nth(index).locator(this.productDescription);
+  }
+
+  getProductPriceByIndex(index: number) {
+    return this.productCard.nth(index).locator(this.productPrice);
+  }
+
+  async clickOnViewDetailsByIndex(index: number) {
+    await this.productCard.nth(index).locator(this.viewDetailsButton).click();
   }
 }

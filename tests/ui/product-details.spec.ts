@@ -3,10 +3,10 @@ import { HeaderPage } from "../../pages/headerPage";
 import { ShopPage } from "../../pages/shopPage";
 import { CartPage } from "../../pages/cartPage";
 import { CheckoutPage } from "../../pages/checkoutPage";
-import { RandomCheckoutData } from "../../utils/checkout.data";
 import { OrderConfirmationPage } from "../../pages/orderConfirmationPage";
 import { ContactAndTrackOrderPage } from "../../pages/contactAndTrackOrderPage";
 import { OrderDetailsPage } from "../../pages/orderDetailsPage";
+import { DetailsPage } from "../../pages/detailsPage";
 
 let headerPage: HeaderPage;
 let shopPage: ShopPage;
@@ -15,6 +15,7 @@ let checkoutPage: CheckoutPage;
 let orderConfirmationPage: OrderConfirmationPage;
 let trackOrderPage: ContactAndTrackOrderPage;
 let orderDetailsPage: OrderDetailsPage;
+let detailsPage: DetailsPage;
 
 test.beforeEach(async ({ page }) => {
   await page.goto("");
@@ -25,39 +26,31 @@ test.beforeEach(async ({ page }) => {
   orderConfirmationPage = new OrderConfirmationPage(page);
   trackOrderPage = new ContactAndTrackOrderPage(page);
   orderDetailsPage = new OrderDetailsPage(page);
+  detailsPage = new DetailsPage(page);
 });
 
-test("Verify cart badge and drawer update when adding multiple products", async ({
+test("Verify product name and price consistency between shop list and detail page", async ({
   page,
 }) => {
-  // Go to shop page
+  // Go to shop age
   await headerPage.goToShopProduct();
 
-  // Make sure badge doesn't starts with any number
-  await expect(headerPage.getBadgeNumber()).toBeEmpty();
+  // Get the name, description and price of a product
+  const index = 2;
+  const prodName =
+    (await shopPage.getProductNameByIndex(index).textContent()) || "";
+  const prodDescription =
+    (await shopPage.getProductDescriptionByIndex(index).textContent()) || "";
+  const prodPrice =
+    (await shopPage.getProductPriceByIndex(index).textContent())?.trim() || "";
 
-  // Add first product
-  const prodName1 = "Brazilian Santos";
-  await shopPage.addProductByName(prodName1);
+  // Click on details
+  await shopPage.clickOnViewDetailsByIndex(index);
 
-  // Validate badge icon shows '1'
-  await expect(headerPage.getBadgeNumber()).toHaveText("1");
-
-  // Add second product
-  const prodName2 = "Colombian Supreme";
-  await shopPage.addProductByName(prodName2);
-
-  // Validate badge icon shows '2'
-  await expect(headerPage.getBadgeNumber()).toHaveText("2");
-
-  // Click on cart button
-  await headerPage.clickOnCartButton();
-
-  // Verify that fist & second product names are displayed
-  await expect(
-    cartPage.getProductNameLocator().filter({ hasText: prodName1 }),
-  ).toBeVisible();
-  await expect(
-    cartPage.getProductNameLocator().filter({ hasText: prodName2 }),
-  ).toBeVisible();
+  // Validate that name, description and price are showed in the details page
+  await expect(detailsPage.getProductTitleLocator()).toHaveText(prodName);
+  await expect(detailsPage.getProductDescriptionLocator()).toHaveText(
+    prodDescription,
+  );
+  await expect(detailsPage.getProductPriceLocator()).toHaveText(prodPrice);
 });

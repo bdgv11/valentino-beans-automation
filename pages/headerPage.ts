@@ -11,7 +11,10 @@ export class HeaderPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.shopProductLink = page.getByRole("link", { name: "Shop" });
+    this.shopProductLink = page.getByRole("link", {
+      name: "Shop",
+      exact: true,
+    });
     this.contactAndTrackLink = page.getByRole("link", { name: "Contact" });
     this.loginButton = page.getByRole("button", { name: "Login" });
     this.signUpButton = page.getByRole("button", { name: "Sign Up" });
