@@ -5,7 +5,7 @@ Professional E2E Automation Framework for Valentino's Magic Beans using Playwrig
 
 ### Phase 1: UI Base (Page Object Model)
 - [x] **TC-01: Successful Purchase Flow (Guest)** - From Home to Order Confirmation.
-- [ ] **TC-02: Category Filtering** - Verify products update when switching between "Coffee" and "Equipment".
+- [x] **TC-02: Dynamic Cart Updates** - Add multiple products and verify the cart drawer reflects the correct count and items.
 - [ ] **TC-03: Product Detail Consistency** - Verify Name and Price match between the list and the detail page.
 
 ### Phase 2: Cart & Checkout Logic

@@ -7,6 +7,7 @@ export class HeaderPage {
   readonly loginButton: Locator;
   readonly signUpButton: Locator;
   readonly cartButton: Locator;
+  readonly cartBadgeNumber: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,6 +18,7 @@ export class HeaderPage {
     this.cartButton = page
       .locator('[data-test-id="header-cart-button"]')
       .getByRole("button");
+    this.cartBadgeNumber = page.locator('span[class="bg-red-500"]');
   }
 
   async validateHeaderPageLoads() {
@@ -43,5 +45,9 @@ export class HeaderPage {
 
   async clickOnCartButton() {
     await this.cartButton.click();
+  }
+
+  getBadgeNumber() {
+    return this.cartButton;
   }
 }
