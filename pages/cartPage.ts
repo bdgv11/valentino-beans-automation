@@ -5,6 +5,7 @@ export class CartPage {
   readonly productNameTitle: Locator;
   readonly productPrice: Locator;
   readonly productQuantity: Locator;
+  readonly increaseProductQtyButton: Locator;
   readonly subTotal: Locator;
   readonly proceedToCheckOutButton: Locator;
 
@@ -16,6 +17,9 @@ export class CartPage {
     this.productPrice = page.locator(".p-6 .font-bold").first();
     this.productQuantity = page.locator(
       'span[class="w-8 text-center font-semibold"]',
+    );
+    this.increaseProductQtyButton = page.locator(
+      'button[data-test-id^="quantity-increase-"]',
     );
 
     // Order Summary
@@ -39,6 +43,10 @@ export class CartPage {
 
   getSubtotalLocator() {
     return this.subTotal;
+  }
+
+  getIncreaseButtonQtyLocator() {
+    return this.increaseProductQtyButton;
   }
 
   async clickOnCheckOutButton() {
