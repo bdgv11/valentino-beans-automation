@@ -33,6 +33,20 @@ export class CheckoutPage {
     this.errorMsgs = page.locator(".text-destructive");
   }
 
+  async clearAllFormFields() {
+    await this.firstNameField.clear();
+    await this.lastNameField.clear();
+    await this.emailField.clear();
+    await this.addressField.clear();
+    await this.citiField.clear();
+    await this.zipCodeField.clear();
+    await this.countryField.clear();
+    await this.nameOnCardField.clear();
+    await this.cardNumberField.clear();
+    await this.expireCardDateField.clear();
+    await this.cvcCardField.clear();
+  }
+
   async fillCheckoutForm(data: any) {
     await this.firstNameField.fill(data.firstName);
     await this.lastNameField.fill(data.lastName);

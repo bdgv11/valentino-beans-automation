@@ -52,6 +52,7 @@ test("Successful Purchase Flow (Guest) by product name", async ({ page }) => {
   await cartPage.clickOnCheckOutButton();
 
   // Fill all the checkout form
+  await checkoutPage.clearAllFormFields();
   const checkoutData = RandomCheckoutData.generateCheckoutData();
   await checkoutPage.fillCheckoutForm(checkoutData);
 
@@ -98,4 +99,57 @@ test("Successful Purchase Flow (Guest) by product name", async ({ page }) => {
   await expect(
     orderDetailsPage.getCustomerEmail(checkoutData.email),
   ).toBeVisible();
+});
+
+test("Validate error msgs when try to checkout", async ({ page }) => {
+  // Variable of product name to select
+  const prodName = "Brazilian Santos";
+  const prodPrice = "22.99";
+  const prodQuantity = "1";
+
+  // Select a product by name
+  await shopPage.addProductByName(prodName);
+
+  // Assert successful msg displayed
+  await shopPage.validateMsgProductAdded(prodName);
+
+  // Click to cart button
+  await headerPage.clickOnCartButton();
+
+  // Assert name, price and quantity
+  await expect(cartPage.getProductNameLocator()).toHaveText(prodName);
+  await expect(cartPage.getProductPriceLocator()).toContainText(prodPrice);
+  await expect(cartPage.getProductQuantityLocator()).toHaveText(prodQuantity);
+  await expect(cartPage.getSubtotalLocator()).toContainText(prodPrice);
+
+  // Click on proceed to checkout button
+  await cartPage.clickOnCheckOutButton();
+
+  // Clear all form fields
+  await checkoutPage.clearAllFormFields();
+
+  // Click on Place Order
+  await checkoutPage.clickToPlaceOrder();
+
+  // Validate error msgs are displayed
+  const expectedErrors = [
+    "First name is required.",
+    "Last name is required.",
+    "Please enter a valid email.",
+    "Address is required.",
+    "City is required.",
+    "ZIP code must be 5 digits.",
+    "Country is required.",
+    "Name on card is required.",
+    "Please enter a valid 16-digit card number.",
+    "Expiry must be in MM/YY format.",
+    "CVC must be 3 or 4 digits.",
+  ];
+  for (const error of expectedErrors) {
+    await expect(
+      checkoutPage.getErrorMsgLocator().filter({ hasText: error }),
+    ).toBeVisible();
+  }
+
+  expect(page).toHaveURL("/checkout");
 });
