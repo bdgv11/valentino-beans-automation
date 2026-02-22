@@ -112,3 +112,44 @@ test("Verify total is correct when add products and increase quantity", async ({
     cartPage.getSubtotalLocator().filter({ hasText: subTotal.toString() }),
   ).toBeVisible();
 });
+
+test("Verify cart badge is updated when remove multiple products", async ({
+  page,
+}) => {
+  // Go to shop page
+  await headerPage.goToShopProduct();
+
+  // Make sure badge doesn't starts with any number
+  await expect(headerPage.getBadgeNumber()).toBeEmpty();
+
+  // Add first product
+  const prodName1 = "Brazilian Santos";
+  await shopPage.addProductByName(prodName1);
+
+  // Validate badge icon shows '1'
+  await expect(headerPage.getBadgeNumber()).toHaveText("1");
+
+  // Add second product
+  const prodName2 = "Colombian Supreme";
+  await shopPage.addProductByName(prodName2);
+
+  // Validate badge icon shows '2'
+  await expect(headerPage.getBadgeNumber()).toHaveText("2");
+
+  // Click on cart button
+  await headerPage.clickOnCartButton();
+
+  // Verify that fist & second product names are displayed
+  await expect(
+    cartPage.getProductNameLocator().filter({ hasText: prodName1 }),
+  ).toBeVisible();
+  await expect(
+    cartPage.getProductNameLocator().filter({ hasText: prodName2 }),
+  ).toBeVisible();
+
+  // Remove both products
+  await cartPage.clickToRemoveAllProducts();
+
+  // Validate badge number is empty
+  await expect(headerPage.getBadgeNumber()).toBeEmpty();
+});

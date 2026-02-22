@@ -10,7 +10,7 @@ Professional E2E Automation Framework for Valentino's Magic Beans using Playwrig
 
 ### Phase 2: Cart & Checkout Logic
 - [x] **TC-04: Cart Totals Calculation** - Add multiple units and verify: Price × Quantity = Total.
-- [ ] **TC-05: Remove from Cart** - Remove an item and verify the cart badge updates to 0.
+- [x] **TC-05: Remove from Cart** - Remove an item and verify the cart badge updates to 0.
 - [ ] **TC-06: Checkout Form Validation** - Attempt to pay with empty fields and verify error messages.
 
 ### Phase 3: API Testing (Backend)

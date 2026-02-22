@@ -6,6 +6,7 @@ export class CartPage {
   readonly productPrice: Locator;
   readonly productQuantity: Locator;
   readonly increaseProductQtyButton: Locator;
+  readonly removeProductButton: Locator;
   readonly subTotal: Locator;
   readonly proceedToCheckOutButton: Locator;
 
@@ -21,9 +22,11 @@ export class CartPage {
     this.increaseProductQtyButton = page.locator(
       'button[data-test-id^="quantity-increase-"]',
     );
-
-    // Order Summary
-    this.subTotal = page.locator('span[class="font-semibold"]').first();
+    ((this.removeProductButton = page.locator(
+      'button[data-test-id^="remove-"]',
+    )),
+      // Order Summary
+      (this.subTotal = page.locator('span[class="font-semibold"]').first()));
     this.proceedToCheckOutButton = page.getByRole("button", {
       name: "Proceed to Checkout",
     });
@@ -51,5 +54,15 @@ export class CartPage {
 
   async clickOnCheckOutButton() {
     await this.proceedToCheckOutButton.click();
+  }
+
+  async clickToRemoveAllProducts() {
+    while ((await this.removeProductButton.count()) > 0) {
+      await this.removeProductButton.first().click();
+    }
+  }
+
+  getRemoveProductButton() {
+    return this.removeProductButton;
   }
 }
