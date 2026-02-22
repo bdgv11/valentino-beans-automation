@@ -17,4 +17,26 @@ test.describe("Products API tests", () => {
     expect(Array.isArray(products.data)).toBe(true);
     expect(products.data.length).toBeGreaterThan(0);
   });
+
+  test("Product schema validation for all products", async ({ request }) => {
+    // HTTP Request
+    const response = await request.get("/products");
+
+    // Check the status code 200
+    expect(response.status()).toBe(200);
+
+    //Convert to JSON
+    const products = await response.json();
+
+    // Using toMatchObject to validate the structure
+    for (const product of products.data) {
+      expect(product).toMatchObject({
+        id: expect.any(String),
+        name: expect.any(String),
+        price: expect.any(Number),
+        image: expect.any(String),
+        stock: expect.any(Number),
+      });
+    }
+  });
 });
