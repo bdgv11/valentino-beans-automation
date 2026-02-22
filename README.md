@@ -14,7 +14,7 @@ Professional E2E Automation Framework for Valentino's Magic Beans using Playwrig
 - [x] **TC-06: Checkout Form Validation** - Attempt to pay with empty fields and verify error messages.
 
 ### Phase 3: API Testing (Backend)
-- [ ] **TC-07: Get All Products (GET)** - Validate 200 OK status and full product list.
+- [x] **TC-07: Get All Products (GET)** - Validate 200 OK status and full product list.
 - [ ] **TC-08: Product Schema Validation** - Ensure JSON objects contain `id`, `name`, `price`, and `image`.
 - [ ] **TC-09: Product Not Found (404)** - Consult an invalid ID and verify the 404 error response.
 

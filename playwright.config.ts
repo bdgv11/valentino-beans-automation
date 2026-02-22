@@ -31,34 +31,33 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
     baseURL: "https://valentinos-magic-beans.click",
+    viewport: { width: 1125, height: 1250 },
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-        viewport: { width: 1125, height: 1250 },
-      },
+      testDir: "./tests/ui",
+      use: { ...devices["Desktop Chrome"] },
     },
-
     {
       name: "firefox",
-      use: {
-        ...devices["Desktop Firefox"],
-        viewport: { width: 1125, height: 1250 },
-      },
+      testDir: "./tests/ui",
+      use: { ...devices["Desktop Firefox"] },
     },
-
+    // {
+    //   name: "webkit",
+    //   testDir: "./tests/ui",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
     {
-      name: "webkit",
+      name: "API Tests",
+      testDir: "./tests/api",
       use: {
-        ...devices["Desktop Safari"],
-        viewport: { width: 1125, height: 1250 },
+        baseURL: "https://api.valentinos-magic-beans.click",
       },
     },
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

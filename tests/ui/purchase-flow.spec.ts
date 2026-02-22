@@ -151,5 +151,5 @@ test("Validate error msgs when try to checkout", async ({ page }) => {
     ).toBeVisible();
   }
 
-  expect(page).toHaveURL("/checkout");
+  await expect(page).toHaveURL("/checkout");
 });
