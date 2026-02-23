@@ -39,4 +39,22 @@ test.describe("Products API tests", () => {
       });
     }
   });
+
+  test("Consult an invalid ID and verify 404 error response and message", async ({
+    request,
+  }) => {
+    // Make HTTP request
+    const id = 999;
+    const response = await request.get(`/products/${id}`);
+
+    // Validate 404 error msg
+    expect(response.status()).toBe(404);
+
+    // Convert to JSON object
+    const responseBody = await response.json();
+    expect(responseBody.success).toBe(false);
+
+    // Validate message error within data is displayed
+    expect(responseBody.data.message).toBe(`Product with ID ${id} not found.`);
+  });
 });

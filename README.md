@@ -16,7 +16,7 @@ Professional E2E Automation Framework for Valentino's Magic Beans using Playwrig
 ### Phase 3: API Testing (Backend)
 - [x] **TC-07: Get All Products (GET)** - Validate 200 OK status and full product list.
 - [x] **TC-08: Product Schema Validation** - Ensure JSON objects contain `id`, `name`, `price`, `image` and `stock`.
-- [ ] **TC-09: Product Not Found (404)** - Consult an invalid ID and verify the 404 error response.
+- [x] **TC-09: Product Not Found (404)** - Consult an invalid ID and verify the 404 error response.
 
 ### Phase 4: Hybrid & Integration
 - [ ] **TC-10: API-UI Data Sync** - Compare that the price from the API matches the price displayed in the UI.
