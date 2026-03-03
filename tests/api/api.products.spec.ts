@@ -5,7 +5,7 @@ test.describe("Products API tests", () => {
     request,
   }) => {
     // Make the HTTP request
-    const response = await request.get("/products");
+    const response = await request.get(`${process.env.API_URL}/products`);
 
     // Check the status code 200
     expect(response.status()).toBe(200);
@@ -20,7 +20,7 @@ test.describe("Products API tests", () => {
 
   test("Product schema validation for all products", async ({ request }) => {
     // HTTP Request
-    const response = await request.get("/products");
+    const response = await request.get(`${process.env.API_URL}/products`);
 
     // Check the status code 200
     expect(response.status()).toBe(200);
@@ -45,7 +45,7 @@ test.describe("Products API tests", () => {
   }) => {
     // Make HTTP request
     const id = 999;
-    const response = await request.get(`/products/${id}`);
+    const response = await request.get(`${process.env.API_URL}/products/${id}`);
 
     // Validate 404 error msg
     expect(response.status()).toBe(404);

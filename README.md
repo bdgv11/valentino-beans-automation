@@ -19,7 +19,7 @@ Professional E2E Automation Framework for Valentino's Magic Beans using Playwrig
 - [x] **TC-09: Product Not Found (404)** - Consult an invalid ID and verify the 404 error response.
 
 ### Phase 4: Hybrid & Integration
-- [ ] **TC-10: API-UI Data Sync** - Compare that the price from the API matches the price displayed in the UI.
+- [x] **TC-10: API-UI Data Sync** - Compare that the price from the API matches the price displayed in the UI.
 - [ ] **TC-11: UI Search vs API Match** - Search for a term in the UI and validate results against API response.
 
 ### Phase 5: DevOps & CI/CD

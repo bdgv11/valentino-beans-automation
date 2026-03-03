@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
+import path from "path";
 
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -30,7 +33,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    baseURL: "https://valentinos-magic-beans.click",
+    baseURL: process.env.BASE_URL,
     viewport: { width: 1125, height: 1250 },
   },
 
@@ -54,9 +57,11 @@ export default defineConfig({
     {
       name: "API Tests",
       testDir: "./tests/api",
-      use: {
-        baseURL: "https://api.valentinos-magic-beans.click",
-      },
+    },
+    {
+      name: "Integration Tests",
+      testDir: "./tests/integration",
+      use: { ...devices["Desktop Chrome"] },
     },
     /* Test against mobile viewports. */
     // {

@@ -59,4 +59,10 @@ export class ShopPage {
   async clickOnViewDetailsByIndex(index: number) {
     await this.productCard.nth(index).locator(this.viewDetailsButton).click();
   }
+
+  getProductCardByName(name: string) {
+    return this.productCard
+      .filter({ hasText: name })
+      .locator(this.productPrice);
+  }
 }
