@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker'
 
 export class RandomCheckoutData {
   static generateCheckoutData() {
@@ -11,9 +11,9 @@ export class RandomCheckoutData {
       zipCode: faker.location.zipCode(),
       country: faker.location.country(),
       //cardNumber: faker.string.numeric({ length: 16, exclude: ['0'] }),
-      cardNumber: "1234 5678 9012 3456",
-      expireDate: "12/28",
+      cardNumber: '1234 5678 9012 3456',
+      expireDate: '12/28',
       cvcCard: faker.finance.creditCardCVV(),
-    };
+    }
   }
 }
