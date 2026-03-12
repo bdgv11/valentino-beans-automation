@@ -1,6 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
 import * as dotenv from 'dotenv'
 import path from 'path'
+import fs from 'fs'
+
+const authPath = '.auth/user.json'
 
 dotenv.config({ path: path.resolve(__dirname, '.env') })
 /**
@@ -35,25 +38,42 @@ export default defineConfig({
     trace: 'on-first-retry',
     baseURL: process.env.BASE_URL,
     viewport: { width: 1125, height: 1250 },
+    screenshot: 'only-on-failure',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/,
+    },
+    {
       name: 'chromium',
       testDir: './tests/ui',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: fs.existsSync(authPath) ? authPath : undefined,
+      },
+      dependencies: ['setup'],
     },
     {
       name: 'firefox',
       testDir: './tests/ui',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: fs.existsSync(authPath) ? authPath : undefined,
+      },
+      dependencies: ['setup'],
     },
-    // {
-    //   name: "webkit",
-    //   testDir: "./tests/ui",
-    //   use: { ...devices["Desktop Safari"] },
-    // },
+    {
+      name: 'webkit',
+      testDir: './tests/ui',
+      use: {
+        ...devices['Desktop Safari'],
+        storageState: fs.existsSync(authPath) ? authPath : undefined,
+      },
+      dependencies: ['setup'],
+    },
     {
       name: 'API Tests',
       testDir: './tests/api',
@@ -61,7 +81,11 @@ export default defineConfig({
     {
       name: 'Integration Tests',
       testDir: './tests/integration',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: fs.existsSync(authPath) ? authPath : undefined,
+      },
+      dependencies: ['setup'],
     },
     /* Test against mobile viewports. */
     // {

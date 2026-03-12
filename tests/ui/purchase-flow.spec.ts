@@ -8,6 +8,8 @@ import { OrderConfirmationPage } from '../../pages/orderConfirmationPage'
 import { ContactAndTrackOrderPage } from '../../pages/contactAndTrackOrderPage'
 import { OrderDetailsPage } from '../../pages/orderDetailsPage'
 
+test.use({ storageState: { cookies: [], origins: [] } })
+
 let headerPage: HeaderPage
 let shopPage: ShopPage
 let cartPage: CartPage
@@ -52,9 +54,13 @@ test('Successful Purchase Flow (Guest) by product name', async ({ page }) => {
   await cartPage.clickOnCheckOutButton()
 
   // Fill all the checkout form
-  await checkoutPage.clearAllFormFields()
+  await checkoutPage.clearContactInformationSection()
+  await checkoutPage.clearShippingAddressSection()
+  await checkoutPage.clearPaymentSection()
   const checkoutData = RandomCheckoutData.generateCheckoutData()
-  await checkoutPage.fillCheckoutForm(checkoutData)
+  await checkoutPage.fillContactInformation(checkoutData)
+  await checkoutPage.fillShippingAddress(checkoutData)
+  await checkoutPage.fillPaymentInformation(checkoutData)
 
   // Click on Place Order
   await checkoutPage.clickToPlaceOrder()
@@ -115,7 +121,9 @@ test('Validate error msgs when try to checkout', async ({ page }) => {
   await cartPage.clickOnCheckOutButton()
 
   // Clear all form fields
-  await checkoutPage.clearAllFormFields()
+  await checkoutPage.clearContactInformationSection()
+  await checkoutPage.clearShippingAddressSection()
+  await checkoutPage.clearPaymentSection()
 
   // Click on Place Order
   await checkoutPage.clickToPlaceOrder()

@@ -76,10 +76,15 @@ test('Data Sync - verify UI purchase matches API order data', async ({ page, req
   // Click on proceed to checkout button
   await cartPage.clickOnCheckOutButton()
 
+  // Avoid continue with pending requests
+  await page.waitForLoadState('networkidle')
+
   // Fill all the checkout form
-  await checkoutPage.clearAllFormFields()
+  await checkoutPage.clearShippingAddressSection()
+  await checkoutPage.clearPaymentSection()
   const checkoutData = RandomCheckoutData.generateCheckoutData()
-  await checkoutPage.fillCheckoutForm(checkoutData)
+  await checkoutPage.fillShippingAddress(checkoutData)
+  await checkoutPage.fillPaymentInformation(checkoutData)
 
   // Click on Place Order
   await checkoutPage.clickToPlaceOrder()
@@ -93,46 +98,25 @@ test('Data Sync - verify UI purchase matches API order data', async ({ page, req
   const orderId = await orderConfirmationPage.getOrderId()
   expect(orderId).toBeTruthy()
   await expect(orderConfirmationPage.validateConfirmationSentToEmail()).toContainText(
-    checkoutData.email,
+    process.env.USER_EMAIL!,
   )
 
-  // Go to Track Order page
-  await orderConfirmationPage.clickToTrackYourOrder()
-
-  // Fill the form to track order
-  await trackOrderPage.typeOrderId(orderId!)
-  await trackOrderPage.typeEmail(checkoutData.email)
-  await trackOrderPage.clickOnTrackorder()
-
-  // API section of the test
-  // Payload to use
-  const payload = {
-    orderId: orderId,
-    email: checkoutData.email,
-  }
-
-  // Make HTTP request with payload
-  const response = await request.post(`${process.env.API_URL}/orders/lookup`, { data: payload })
+  // Make HTTP request with token
+  const response = await request.get(`${process.env.API_URL}/users/me/orders`, {
+    headers: {
+      Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
+      Accept: 'application/json',
+    },
+  })
   expect(response.status()).toBe(200)
 
   // Convert to JSON
   const product = await response.json()
 
-  // On Order Details page validate product name, quantity, client name and email displayed
-  await expect(orderDetailsPage.getProductNameLocator(prodName!)).toContainText(
-    product.data.items[0].productName,
-  )
-  await expect(orderDetailsPage.getProductQuantity()).toContainText(
-    product.data.items[0].quantity.toString(),
-  )
-  await expect(orderDetailsPage.getProductPrice(prodPrice!.replace('$', '').trim())).toContainText(
-    product.data.items[0].price.toString(),
-  )
-  await expect(
-    orderDetailsPage.getCustomerName(checkoutData.firstName, checkoutData.lastName),
-  ).toContainText(product.data.customerName)
-
-  await expect(orderDetailsPage.getCustomerEmail(checkoutData.email)).toContainText(
-    product.data.customerEmail,
-  )
+  // Validate against API the product just ordered = orderId, product name, quantity, client name and email displayed
+  expect(product.data[0].orderId).toBe(orderId)
+  expect(product.data[0].items[0].productName).toBe(prodName!)
+  expect(product.data[0].items[0].quantity.toString()).toBe(prodQuantity!)
+  expect(product.data[0].items[0].price.toString()).toBe(prodPrice!.replace('$', '').trim())
+  expect(product.data[0].customerEmail).toBe(process.env.USER_EMAIL!)
 })

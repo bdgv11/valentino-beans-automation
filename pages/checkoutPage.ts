@@ -33,28 +33,36 @@ export class CheckoutPage {
     this.errorMsgs = page.locator('.text-destructive')
   }
 
-  async clearAllFormFields() {
+  async clearContactInformationSection() {
     await this.firstNameField.clear()
     await this.lastNameField.clear()
     await this.emailField.clear()
+  }
+  async clearShippingAddressSection() {
     await this.addressField.clear()
     await this.citiField.clear()
     await this.zipCodeField.clear()
     await this.countryField.clear()
+  }
+  async clearPaymentSection() {
     await this.nameOnCardField.clear()
     await this.cardNumberField.clear()
     await this.expireCardDateField.clear()
     await this.cvcCardField.clear()
   }
 
-  async fillCheckoutForm(data: any) {
+  async fillContactInformation(data: any) {
     await this.firstNameField.fill(data.firstName)
     await this.lastNameField.fill(data.lastName)
     await this.emailField.fill(data.email)
+  }
+  async fillShippingAddress(data: any) {
     await this.addressField.fill(data.address)
     await this.citiField.fill(data.city)
     await this.zipCodeField.fill(data.zipCode)
     await this.countryField.fill(data.country)
+  }
+  async fillPaymentInformation(data: any) {
     await this.nameOnCardField.fill(data.firstName + ' ' + data.lastName)
     await this.cardNumberField.fill(data.cardNumber)
     await this.expireCardDateField.fill(data.expireDate)
